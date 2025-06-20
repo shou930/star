@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Campus Brews</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/scripts.js" defer></script>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <h1 class="logo">Campus Brews</h1>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#location">Find Us</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-overlay">
+      <h2>Welcome to Campus Brews</h2>
+      <p>Where every cup fuels your success ☕</p>
+    </div>
+  </section>
+
+  <!-- Menu -->
+  <section id="menu" class="section">
+    <h2>Our Menu</h2>
+    <div class="menu-grid">
+      <div class="menu-item" style="--i: 1">
+        <img src="images/espresso.jpg" alt="Espresso">
+        <h3>Espresso</h3>
+        <p>Rich & bold – $2.50</p>
+        <button onclick="addToFavorites('Espresso')">❤️ Add to Favorites</button>
+      </div>
+
+      <div class="menu-item" style="--i: 2">
+        <img src="images/latte.jpg" alt="Iced Latte">
+        <h3>Iced Latte</h3>
+        <p>Chilled & creamy – $3.75</p>
+        <button onclick="addToFavorites('Iced Latte')">❤️ Add to Favorites</button>
+      </div>
+
+      <div class="menu-item" style="--i: 3">
+        <img src="images/matcha.jpg" alt="Matcha Frappe">
+        <h3>Matcha Frappe</h3>
+        <p>Green & sweet – $4.00</p>
+        <button onclick="addToFavorites('Matcha Frappe')">❤️ Add to Favorites</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Location -->
+  <section id="location" class="section location">
+    <h2>Find Us</h2>
+    <p>📍 Student Center, 1st Floor · 🕒 Mon–Fri, 8am–6pm</p>
+  </section>
+
+  <!-- Scroll-to-top Button -->
+  <button onclick="scrollToTop()" class="scroll-top">⬆️</button>
+
+  <!-- Footer -->
+  <footer class="footer">
+    &copy; 2025 Campus Brews. All rights reserved.
+  </footer>
+
+</body>
+</html>
