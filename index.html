@@ -1,73 +1,1215 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Campus Brews</title>
-  <link rel="stylesheet" href="styles.css">
-  <script src="scripts.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shri Fattechand Jain Jr College</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Font - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+            /* Deepest blue for overall background */
+            background-color: #020617; /* Tailwind's slate-950 equivalent */
+            color: #E2E8F0; /* Light text for contrast on dark backgrounds */
+        }
+        .nav-link {
+            transition: color 0.2s ease-in-out, transform 0.2s ease-in-out;
+        }
+        .nav-link:hover {
+            color: #63B3ED; /* Lighter blue for hover effect */
+            transform: translateY(-2px);
+        }
+        .hero-section {
+            /* Deeper gradient effect with darker blues */
+            background: linear-gradient(to right, rgba(10, 25, 47, 0.8), rgba(2, 6, 23, 0.8)), url('https://source.unsplash.com/1920x800/?college,campus,university') center center / cover no-repeat;
+            background-size: 110%; /* Slightly zoomed in */
+            background-position: center center;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white; /* Hero text remains white for strong contrast */
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.9);
+            animation: fadeIn 1s ease-out forwards, heroPanZoom 20s infinite alternate ease-in-out; /* Initial fade and continuous pan/zoom */
+        }
+
+        @keyframes heroPanZoom {
+            0% {
+                background-position: center center;
+                background-size: 110%;
+            }
+            100% {
+                background-position: center top;
+                background-size: 120%;
+            }
+        }
+
+        .section-header {
+            border-bottom: 3px solid #3182CE; /* Stronger blue underline */
+            display: inline-block;
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+            font-weight: 700;
+            /* Header color controlled by context: black for light sections, light blue for dark sections */
+        }
+        .header-light {
+            color: #000000; /* Black for section headers on light backgrounds */
+        }
+        .header-dark {
+            color: #63B3ED; /* Lighter blue for section headers on dark backgrounds */
+        }
+
+        /* New styles for scroll-reveal animation */
+        .hidden-section {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+        .reveal-section {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Card hover animation */
+        .animated-card {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .animated-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Sticky Header Effects */
+        .main-header.scrolled {
+            background-color: rgba(1, 4, 15, 0.95); /* Slightly darker, semi-transparent */
+            padding: 0.75rem 1rem; /* Smaller padding */
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+        }
+        .main-header {
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Loading spinner animation */
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #fff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* Loading spinner for black text buttons */
+        .loading-spinner-dark {
+            border: 4px solid rgba(0, 0, 0, 0.3);
+            border-top: 4px solid #000;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+        /* Testimonial specific */
+        .testimonial-carousel-container {
+            position: relative;
+            overflow: hidden;
+        }
+        .testimonial-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .testimonial-card {
+            flex: 0 0 100%; /* Each card takes full width */
+            padding: 1rem;
+            box-sizing: border-box;
+        }
+        .carousel-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0,0,0,0.5);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            z-index: 10;
+            transition: background-color 0.3s;
+        }
+        .carousel-button:hover {
+            background-color: rgba(0,0,0,0.7);
+        }
+        .carousel-button.left { left: 1rem; }
+        .carousel-button.right { right: 1rem; }
+
+        /* Fullscreen Academics Overlay */
+        .academics-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(2, 6, 23, 0.98); /* Near black, slightly transparent */
+            z-index: 90;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            box-sizing: border-box;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease-in-out, visibility 0.5s;
+        }
+        .academics-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .academics-overlay .container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .academics-overlay .grid {
+            flex-grow: 1;
+            overflow-y: auto; /* Enable scrolling for content if it exceeds screen height */
+            padding-bottom: 2rem; /* Give some space at the bottom */
+        }
+        .academics-overlay .animated-card {
+            height: auto; /* Allow card height to adjust based on content within overlay */
+        }
+        .academics-overlay .modal-close-btn { /* Repurpose modal close button styling for academics overlay */
+            color: white;
+            z-index: 100; /* Ensure it's above content */
+        }
+
+        /* Paper Plane Fly Animation */
+        @keyframes fly-paper-plane {
+            0% {
+                transform: translateX(0) translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            50% {
+                transform: translateX(30px) translateY(-30px) rotate(20deg);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateX(100px) translateY(-100px) rotate(45deg);
+                opacity: 0;
+            }
+        }
+
+        .fly-away {
+            animation: fly-paper-plane 0.8s forwards; /* 0.8s duration, stays at end state */
+            position: absolute; /* Needed for transform to work relative to original position */
+            left: 50%; /* Center relative to button */
+            top: 50%;
+            transform: translate(-50%, -50%); /* Adjust to center the icon initially */
+        }
+        .send-message-btn {
+            position: relative; /* Container for absolute icon */
+            overflow: hidden; /* Hide icon as it flies out */
+        }
+        .send-message-btn .fas {
+            transition: opacity 0.3s ease-out; /* Smooth transition for disappearing icon before animation */
+        }
+
+        /* New styles for the hamburger menu overlay */
+        #nav-links-overlay {
+            /* Initially off-screen */
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+            /* Full height, adjusted width for responsiveness */
+            height: 100vh;
+            width: 100%; /* Default for mobile */
+        }
+
+        /* Small to medium screens: make it a bit narrower */
+        @media (min-width: 640px) { /* sm breakpoint */
+            #nav-links-overlay {
+                width: 320px; /* Adjust as needed */
+            }
+        }
+
+        /* Desktop: make it a bit wider for more comfortable clicking */
+        @media (min-width: 1024px) { /* lg breakpoint */
+            #nav-links-overlay {
+                width: 380px; /* Adjust as needed */
+            }
+        }
+
+        #nav-links-overlay.menu-open {
+            transform: translateX(0); /* Slide into view */
+        }
+
+        /* Ensure body doesn't scroll when menu is open */
+        body.no-scroll {
+            overflow: hidden;
+        }
+
+        /* Adjustments for the main header's nav items as they are now in the overlay */
+        #mainHeader nav .flex-wrap {
+            flex-wrap: nowrap; /* Prevent wrapping in header if not desired */
+        }
+
+        /* Styles for the Eligibility Criteria Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.7); /* Dark semi-transparent background */
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: #047857; /* Deep green for the modal background (Tailwind's emerald-700) */
+            padding: 2.5rem;
+            border-radius: 1rem; /* Rounded corners */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); /* Stronger shadow */
+            max-width: 700px;
+            width: 90%;
+            color: #ECFDF5; /* Light text for contrast (Tailwind's emerald-50) */
+            position: relative;
+            transform: scale(0.8) translateY(20px); /* Initial state for animation */
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+        }
+        .modal-overlay.active .modal-content {
+            transform: scale(1) translateY(0); /* Final state for animation */
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2.5rem; /* Larger icon */
+            color: #ECFDF5; /* Light green close button */
+            cursor: pointer;
+            transition: color 0.2s ease-in-out;
+        }
+        .modal-close-btn:hover {
+            color: #A7F3D0; /* Lighter green on hover */
+        }
+
+        /* Scroll-to-Top Button */
+        #scrollToTopBtn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: #3182CE; /* Tailwind blue-600 */
+            color: white;
+            padding: 1rem;
+            border-radius: 9999px; /* Fully rounded */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+            border: none;
+            outline: none;
+            z-index: 99;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+
+        #scrollToTopBtn.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #scrollToTopBtn i {
+            font-size: 1.5rem; /* Large arrow icon */
+        }
+    </style>
 </head>
 <body>
 
-  <!-- Navbar -->
-  <header class="navbar">
-    <h1 class="logo">Campus Brews</h1>
-    <nav>
-      <ul class="nav-links">
-        <li><a href="#menu">Menu</a></li>
-        <li><a href="#location">Find Us</a></li>
-      </ul>
-    </nav>
-  </header>
+    <!-- Header & Navigation -->
+    <header id="mainHeader" class="bg-blue-900 shadow-lg p-4 sticky top-0 z-50 main-header"> <!-- Deep blue header -->
+        <nav class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <img src="https://placehold.co/50x50/3182CE/EBF8FF?text=SFJC" alt="College Logo" class="h-12 w-12 rounded-full shadow-md">
+                <a href="#" class="text-2xl font-bold text-blue-100">Shri Fattechand Jain Jr College</a>
+            </div>
+            <!-- Hamburger button is now always visible on all screen sizes -->
+            <button id="menu-button" class="text-blue-200 focus:outline-none">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </nav>
+    </header>
 
-  <!-- Hero -->
-  <section class="hero">
-    <div class="hero-overlay">
-      <h2>Welcome to Campus Brews</h2>
-      <p>Where every cup fuels your success ☕</p>
+    <!-- Fullscreen/Sidebar Navigation Overlay (Hidden by default, slides in from right) -->
+    <div id="nav-links-overlay" class="fixed top-0 right-0 bg-blue-950 z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col p-8 md:p-12">
+        <!-- Close button for the overlay -->
+        <button id="close-menu-button" class="absolute top-4 right-4 text-white text-4xl hover:text-blue-300 focus:outline-none">
+            <i class="fas fa-times-circle"></i>
+        </button>
+        <!-- Navigation links within the overlay -->
+        <div id="nav-links" class="flex flex-col space-y-6 mt-16 overflow-y-auto">
+            <a href="#home" class="nav-link text-3xl font-medium text-blue-100 hover:text-blue-400 py-2 rounded-md">Home</a>
+            <a href="#about" class="nav-link text-3xl font-medium text-blue-100 hover:text-blue-400 py-2 rounded-md">About Us</a>
+            <a href="#academics" class="nav-link text-3xl font-medium text-blue-100 hover:text-blue-400 py-2 rounded-md">Academics</a>
+            <a href="#admissions" class="nav-link text-3xl font-medium text-blue-100 hover:text-blue-400 py-2 rounded-md">Admissions</a>
+            <a href="#facilities" class="nav-link text-3xl font-medium text-blue-100 hover:text-blue-400 py-2 rounded-md">Facilities</a>
+            <a href="#testimonials" class="nav-link text-3xl font-medium text-blue-100 hover:text-blue-400 py-2 rounded-md">Testimonials</a>
+            <a href="#contact" class="nav-link text-3xl font-medium text-blue-100 hover:text-blue-400 py-2 rounded-md">Contact Us</a>
+        </div>
     </div>
-  </section>
 
-  <!-- Menu -->
-  <section id="menu" class="section">
-    <h2>Our Menu</h2>
-    <div class="menu-grid">
-      <div class="menu-item" style="--i: 1">
-        <img src="espresso.jpg" alt="Espresso">
-        <h3>Espresso</h3>
-        <p>Rich & bold – $2.50</p>
-        <button onclick="addToFavorites('Espresso')">❤️ Add to Favorites</button>
-      </div>
 
-      <div class="menu-item" style="--i: 2">
-        <img src="latte.jpg" alt="Iced Latte">
-        <h3>Iced Latte</h3>
-        <p>Chilled & creamy – $3.75</p>
-        <button onclick="addToFavorites('Iced Latte')">❤️ Add to Favorites</button>
-      </div>
+    <!-- Hero Section -->
+    <section id="home" class="hero-section text-center p-8">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-5xl md:text-6xl font-extrabold mb-4 animate-fade-in-up">
+                Welcome to Shri Fattechand Jain Jr College
+            </h1>
+            <p class="text-xl md:text-2xl mb-8 animate-fade-in-up delay-200">
+                Shaping Futures, Fostering Excellence. Your journey to success begins here.
+            </p>
+            <a href="#admissions" id="heroApplyNowBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center mx-auto max-w-xs">
+                Apply Now <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+    </section>
 
-      <div class="menu-item" style="--i: 3">
-        <img src="matcha.jpg" alt="Matcha Frappe">
-        <h3>Matcha Frappe</h3>
-        <p>Green & sweet – $4.00</p>
-        <button onclick="addToFavorites('Matcha Frappe')">❤️ Add to Favorites</button>
-      </div>
+    <!-- About Us Section -->
+    <section id="about" class="container mx-auto p-8 py-16 bg-blue-100 hidden-section"> <!-- Light blue background -->
+        <div class="text-center mb-12">
+            <h2 class="text-4xl section-header header-light">About Our College</h2>
+        </div>
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div class="rounded-lg shadow-xl overflow-hidden bg-blue-200 animated-card"> <!-- Light blue background for image container -->
+                <img src="https://source.unsplash.com/600x400/?college,students,classroom" alt="College Campus" class="w-full h-auto object-cover transform hover:scale-105 transition duration-300">
+            </div>
+            <div>
+                <p class="text-lg leading-relaxed mb-6 text-gray-900">
+                    Shri Fattechand Jain Jr College has been a beacon of knowledge and personal growth for over two decades. We are dedicated to providing a nurturing and stimulating environment where students can excel academically and develop holistically.
+                </p>
+                <p class="text-lg leading-relaxed mb-6 text-gray-900">
+                    Our commitment is to empower students of 11th and 12th standards with a strong foundation, critical thinking skills, and a passion for lifelong learning, preparing them for higher education and successful careers.
+                </p>
+                <ul class="list-disc list-inside text-lg text-gray-900 space-y-2">
+                    <li><i class="fas fa-check-circle text-blue-500 mr-2"></i> Experienced Faculty</li>
+                    <li><i class="fas fa-check-circle text-blue-500 mr-2"></i> State-of-the-art Facilities</li>
+                    <li><i class="fas fa-check-circle text-blue-500 mr-2"></i> Holistic Development Programs</li>
+                    <li><i class="fas fa-check-circle text-blue-500 mr-2"></i> Strong Academic Record</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Academics Section - Clickable/Hoverable Trigger -->
+    <section id="academics" class="bg-blue-900 p-8 py-16 hidden-section cursor-pointer relative overflow-hidden">
+        <div id="academicsTeaser" class="container mx-auto text-center transition-opacity duration-500">
+            <h2 class="text-4xl section-header header-dark">Our Academic Programs</h2>
+            <p class="text-lg text-blue-200 mt-4 max-w-2xl mx-auto">
+                Click or hover (desktop) to explore our detailed academic streams and curriculum!
+            </p>
+            <i class="fas fa-arrow-down text-blue-200 text-3xl mt-6 animate-bounce"></i>
+        </div>
+    </section>
+
+    <!-- Fullscreen Academics Content Overlay (Hidden by default) -->
+    <div id="academicsFullScreenOverlay" class="academics-overlay">
+        <button id="closeAcademicsOverlayBtn" class="modal-close-btn fixed top-4 right-4 text-white text-4xl hover:text-blue-300 transition-colors duration-200 focus:outline-none">
+            <i class="fas fa-times-circle"></i>
+        </button>
+        <div class="container mx-auto">
+            <div class="text-center pt-8 mb-8">
+                <h2 class="text-4xl section-header header-dark">Our Academic Programs</h2>
+                <p class="text-lg text-blue-200 mt-4 max-w-2xl mx-auto">
+                    A comprehensive overview of our diverse academic streams, designed to build strong foundations for your future.
+                </p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8 flex-grow overflow-y-auto pb-8">
+                <!-- Science Stream Card (inside overlay) -->
+                <div id="scienceCard" class="bg-blue-800 rounded-xl shadow-lg p-6 text-center h-full flex flex-col animated-card cursor-pointer">
+                    <div class="text-5xl text-blue-300 mb-4">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-3 text-blue-100">Science Stream (11th & 12th)</h3>
+                    <p class="text-blue-200 leading-relaxed">
+                        Comprehensive curriculum covering Physics, Chemistry, Mathematics, Biology, and Computer Science. Prepares students for competitive exams.
+                    </p>
+                    <ul class="text-left text-blue-300 mt-4 text-sm list-disc list-inside">
+                        <li>JEE/NEET preparation support</li>
+                        <li>Well-equipped labs</li>
+                        <li>Experienced science faculty</li>
+                    </ul>
+                </div>
+                <!-- Commerce Stream Card (inside overlay) -->
+                <div id="commerceCard" class="bg-blue-800 rounded-xl shadow-lg p-6 text-center h-full flex flex-col animated-card cursor-pointer">
+                    <div class="text-5xl text-emerald-300 mb-4">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-3 text-blue-100">Commerce Stream (11th & 12th)</h3>
+                    <p class="text-blue-200 leading-relaxed">
+                        Focus on Accountancy, Economics, Business Studies, and Mathematics. Builds a strong foundation for future business careers.
+                    </p>
+                    <ul class="text-left text-blue-300 mt-4 text-sm list-disc list-inside">
+                        <li>CA/CS foundation guidance</li>
+                        <li>Practical case studies</li>
+                        <li>Industry-relevant insights</li>
+                    </ul>
+                </div>
+                <!-- Arts/Humanities Stream Card (inside overlay) -->
+                <div id="artsCard" class="bg-blue-800 rounded-xl shadow-lg p-6 text-center h-full flex flex-col animated-card cursor-pointer">
+                    <div class="text-5xl text-fuchsia-300 mb-4">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-3 text-blue-100">Arts/Humanities Stream (11th & 12th)</h3>
+                    <p class="text-blue-200 leading-relaxed">
+                        Exploration of subjects like History, Political Science, Sociology, and Literature. Encourages critical thinking and societal understanding.
+                    </p>
+                    <ul class="text-left text-blue-300 mt-4 text-sm list-disc list-inside">
+                        <li>Debate and discussion clubs</li>
+                        <li>Research project opportunities</li>
+                        <li>Focus on liberal arts</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
-  </section>
 
-  <!-- Location -->
-  <section id="location" class="section location">
-    <h2>Find Us</h2>
-    <p>📍 Student Center, 1st Floor · 🕒 Mon–Fri, 8am–6pm</p>
-  </section>
+    <!-- Science Stream Details Section -->
+    <section id="science-details" class="bg-blue-100 p-8 py-16 hidden-section">
+        <div class="container mx-auto text-gray-900">
+            <h2 class="text-4xl section-header header-light text-center">Science Stream: In-depth</h2>
+            <div class="grid md:grid-cols-2 gap-8 mt-8">
+                <div>
+                    <h3 class="text-3xl font-semibold mb-4">Curriculum Highlights:</h3>
+                    <ul class="list-disc list-inside text-lg space-y-2">
+                        <li>**Physics:** Mechanics, Thermodynamics, Optics, Electromagnetism, Modern Physics.</li>
+                        <li>**Chemistry:** Organic, Inorganic, Physical Chemistry with practical applications.</li>
+                        <li>**Mathematics:** Calculus, Algebra, Geometry, Statistics, and problem-solving techniques.</li>
+                        <li>**Biology:** Zoology, Botany, Human Physiology, Genetics, Ecology (for medical aspirants).</li>
+                        <li>**Computer Science/Electronics:** Programming fundamentals, digital logic, circuit design.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-3xl font-semibold mb-4">Beyond the Classroom:</h3>
+                    <ul class="list-disc list-inside text-lg space-y-2">
+                        <li>**JEE/NEET Preparation:** Integrated coaching and mock tests.</li>
+                        <li>**Advanced Laboratories:** Modern labs for hands-on experiments.</li>
+                        <li>**Science Clubs:** Robotics, Astronomy, and Innovation Clubs.</li>
+                        <li>**Guest Lectures:** From renowned scientists and engineers.</li>
+                        <li>**Project-Based Learning:** Encouraging scientific inquiry and research.</li>
+                    </ul>
+                    <img src="https://placehold.co/600x350/90CDF4/0A192F?text=Science+Lab" alt="Science Lab" class="w-full h-auto rounded-lg shadow-md mt-6">
+                </div>
+            </div>
+            <div class="text-center mt-12">
+                <a href="#academics" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105 inline-flex items-center">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to Academic Overview
+                </a>
+            </div>
+        </div>
+    </section>
 
-  <!-- Scroll-to-top Button -->
-  <button onclick="scrollToTop()" class="scroll-top">⬆️</button>
+    <!-- Commerce Stream Details Section -->
+    <section id="commerce-details" class="bg-emerald-100 p-8 py-16 hidden-section">
+        <div class="container mx-auto text-gray-900">
+            <h2 class="text-4xl section-header header-light text-center">Commerce Stream: In-depth</h2>
+            <div class="grid md:grid-cols-2 gap-8 mt-8">
+                <div>
+                    <h3 class="text-3xl font-semibold mb-4">Curriculum Highlights:</h3>
+                    <ul class="list-disc list-inside text-lg space-y-2">
+                        <li>**Accountancy:** Principles of accounting, financial statements, business transactions.</li>
+                        <li>**Economics:** Micro and Macro economics, Indian economy, economic policies.</li>
+                        <li>**Business Studies:** Principles of management, marketing, finance, human resources.</li>
+                        <li>**Mathematics/Statistics:** Applied mathematics for commerce and business analysis.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-3xl font-semibold mb-4">Career Pathways & Support:</h3>
+                    <ul class="list-disc list-inside text-lg space-y-2">
+                        <li>**CA/CS/CMA Foundation:** Specialized guidance and preparatory classes.</li>
+                        <li>**Case Study Analysis:** Real-world business scenarios for practical understanding.</li>
+                        <li>**Industry Workshops:** Insights from business leaders and financial experts.</li>
+                        <li>**Entrepreneurship Club:** Nurturing innovative business ideas.</li>
+                        <li>**Financial Literacy Programs:** Essential skills for personal and professional finance.</li>
+                    </ul>
+                    <img src="https://placehold.co/600x350/A7F3D0/0A192F?text=Commerce+Class" alt="Commerce Class" class="w-full h-auto rounded-lg shadow-md mt-6">
+                </div>
+            </div>
+            <div class="text-center mt-12">
+                <a href="#academics" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105 inline-flex items-center">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to Academic Overview
+                </a>
+            </div>
+        </div>
+    </section>
 
-  <!-- Footer -->
-  <footer class="footer">
-    &copy; 2025 Campus Brews. All rights reserved.
-  </footer>
+    <!-- Arts Stream Details Section -->
+    <section id="arts-details" class="bg-fuchsia-100 p-8 py-16 hidden-section">
+        <div class="container mx-auto text-gray-900">
+            <h2 class="text-4xl section-header header-light text-center">Arts/Humanities Stream: In-depth</h2>
+            <div class="grid md:grid-cols-2 gap-8 mt-8">
+                <div>
+                    <h3 class="text-3xl font-semibold mb-4">Curriculum Highlights:</h3>
+                    <ul class="list-disc list-inside text-lg space-y-2">
+                        <li>**History:** Indian history, world history, cultural heritage, and historical analysis.</li>
+                        <li>**Political Science:** Political theories, governance, international relations.</li>
+                        <li>**Sociology:** Society, social institutions, cultural dynamics, social issues.</li>
+                        <li>**Literature:** English and regional language literature, critical analysis, creative writing.</li>
+                        <li>**Psychology/Philosophy:** Understanding human behavior, thought processes, ethical frameworks.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-3xl font-semibold mb-4">Enhancing Intellectual Growth:</h3>
+                    <ul class="list-disc list-inside text-lg space-y-2">
+                        <li>**Debate & Public Speaking:** Forums to hone persuasive communication skills.</li>
+                        <li>**Literary & Arts Clubs:** Encouraging creative expression and critical appreciation.</li>
+                        <li>**Research Project Opportunities:** In-depth study on topics of interest.</li>
+                        <li>**Field Trips:** To historical sites, cultural centers, and parliamentary sessions.</li>
+                        <li>**Guest Speakers:** Academicians, writers, and public figures.</li>
+                    </ul>
+                    <img src="https://placehold.co/600x350/FBCFE8/0A192F?text=Arts+Class" alt="Arts Class" class="w-full h-auto rounded-lg shadow-md mt-6">
+                </div>
+            </div>
+            <div class="text-center mt-12">
+                <a href="#academics" class="bg-fuchsia-600 hover:bg-fuchsia-700 text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105 inline-flex items-center">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to Academic Overview
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admissions Section -->
+    <section id="admissions" class="container mx-auto p-8 py-16 bg-blue-100 hidden-section"> <!-- Light blue background -->
+        <div class="text-center mb-12">
+            <h2 class="text-4xl section-header header-light">Admissions</h2>
+        </div>
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+                <h3 class="text-3xl font-semibold mb-6 text-gray-900">Admission Process for 2025-26</h3>
+                <p class="text-lg leading-relaxed mb-6 text-gray-900">
+                    We welcome aspiring students to join our college. The admission process is designed to be straightforward and accessible.
+                </p>
+                <ol class="list-decimal list-inside text-lg text-gray-900 space-y-3">
+                    <li><span class="font-semibold">Step 1: Application Submission:</span> Fill out the online application form with all required details.</li>
+                    <li><span class="font-semibold">Step 2: Document Verification:</span> Submit necessary documents (mark sheets, ID proof, etc.) as specified.</li>
+                    <li><span class="font-semibold">Step 3: Entrance Exam/Interview:</span> Qualified candidates may be invited for an entrance exam or interview.</li>
+                    <li><span class="font-semibold">Step 4: Admission Confirmation:</span> Successful candidates will receive an admission offer. Complete fee payment to confirm.</li>
+                </ol>
+                <div class="mt-8 flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
+                    <button id="downloadProspectusBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out text-center flex items-center justify-center">
+                        <span id="downloadProspectusText">Download Prospectus</span>
+                        <span id="downloadProspectusSpinner" class="hidden loading-spinner"></span>
+                    </button>
+                    <button id="viewEligibilityBtn" class="bg-blue-200 hover:bg-blue-300 text-gray-900 font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out text-center flex items-center justify-center">
+                        <span id="viewEligibilityText">View Eligibility Criteria</span>
+                        <span id="viewEligibilitySpinner" class="hidden loading-spinner-dark"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="rounded-lg shadow-xl overflow-hidden bg-blue-200 animated-card"> <!-- Light blue background for image container -->
+                <img src="https://source.unsplash.com/600x400/?admissions,documents,education" alt="Admission Information" class="w-full h-auto object-cover transform hover:scale-105 transition duration-300">
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal for Eligibility Criteria -->
+    <div id="eligibilityModal" class="modal-overlay">
+        <div class="modal-content">
+            <button id="closeEligibilityModalBtn" class="modal-close-btn">
+                <i class="fas fa-times-circle"></i>
+            </button>
+            <h3 class="text-4xl font-extrabold mb-6 text-center text-emerald-100">Eligibility Criteria</h3>
+            <div class="space-y-4 text-lg">
+                <p>Admission to Shri Fattechand Jain Jr College for the 11th and 12th standards is based on the following criteria:</p>
+                <ul class="list-disc list-inside ml-4 space-y-2">
+                    <li>**Academic Performance:** Minimum 60% marks in the 10th standard (or equivalent examination) from a recognized board. Specific streams may require higher percentages in relevant subjects.</li>
+                    <li>**Age Limit:** Applicants must be between 15 and 17 years of age as of June 1st of the admission year. (Relaxation for certain categories as per government norms).</li>
+                    <li>**Entrance Exam:** All candidates must appear for the college's entrance examination, which assesses aptitude in core subjects relevant to their chosen stream.</li>
+                    <li>**Interview:** Shortlisted candidates from the entrance exam will be called for a personal interview to assess their communication skills, general knowledge, and motivation.</li>
+                    <li>**Document Verification:** Original mark sheets, transfer certificates, and identity proofs are required for verification during the admission process.</li>
+                </ul>
+                <p class="mt-6 text-center text-emerald-200">
+                    For detailed eligibility requirements and specific subject prerequisites, please refer to the official college prospectus.
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Facilities Section - Reintegrated into main page -->
+    <section id="facilities" class="bg-teal-900 p-8 py-16 hidden-section"> <!-- Deep teal background -->
+        <div class="container mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl section-header header-dark">Campus Facilities</h2>
+                <p class="text-lg text-blue-200 mt-4 max-w-2xl mx-auto">
+                    Shri Fattechand Jain Jr College is committed to providing a conducive learning environment with state-of-the-art facilities that support both academic and extracurricular pursuits of our students.
+                </p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Library -->
+                <div class="bg-teal-800 rounded-xl shadow-lg p-6 text-center animated-card">
+                    <div class="text-5xl text-amber-300 mb-4">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-3 text-blue-100">Modern Library</h3>
+                    <p class="text-blue-200 leading-relaxed">
+                        Our spacious and well-stocked library offers an extensive collection of textbooks, reference materials, journals, and digital resources. It provides a quiet and comfortable space for study and research.
+                    </p>
+                </div>
+                <!-- Laboratories -->
+                <div class="bg-teal-800 rounded-xl shadow-lg p-6 text-center animated-card">
+                    <div class="text-5xl text-rose-300 mb-4">
+                        <i class="fas fa-atom"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-3 text-blue-100">Well-equipped Labs</h3>
+                    <p class="text-blue-200 leading-relaxed">
+                        We have advanced laboratories for Physics, Chemistry, Biology, and Computer Science, equipped with the latest instruments and technology to facilitate hands-on learning and practical experimentation.
+                    </p>
+                </div>
+                <!-- Sports Facilities -->
+                <div class="bg-teal-800 rounded-xl shadow-lg p-6 text-center animated-card">
+                    <div class="text-5xl text-indigo-300 mb-4">
+                        <i class="fas fa-futbol"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-3 text-blue-100">Sports & Recreation</h3>
+                    <p class="text-blue-200 leading-relaxed">
+                        Promoting physical well-being, our campus includes facilities for various sports like basketball, volleyball, and indoor games, encouraging students to stay active and develop teamwork.
+                    </p>
+                </div>
+                <!-- Auditorium -->
+                <div class="bg-teal-800 rounded-xl shadow-lg p-6 text-center animated-card">
+                    <div class="text-5xl text-sky-300 mb-4">
+                        <i class="fas fa-theater-masks"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-3 text-blue-100">State-of-the-Art Auditorium</h3>
+                    <p class="text-blue-200 leading-relaxed">
+                        Our spacious auditorium is a hub for cultural events, seminars, workshops, and annual functions, equipped with modern audio-visual technology for an immersive experience.
+                    </p>
+                </div>
+                <!-- Cafeteria -->
+                <div class="bg-teal-800 rounded-xl shadow-lg p-6 text-center animated-card">
+                    <div class="text-5xl text-lime-300 mb-4">
+                        <i class="fas fa-coffee"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-3 text-blue-100">Hygienic Cafeteria</h3>
+                    <p class="text-blue-200 leading-relaxed">
+                        The college cafeteria provides nutritious and delicious meals and snacks in a clean and comfortable environment, serving as a perfect spot for students to relax and socialize.
+                    </p>
+                </div>
+                <!-- Computer Labs -->
+                <div class="bg-teal-800 rounded-xl shadow-lg p-6 text-center animated-card">
+                    <div class="text-5xl text-purple-300 mb-4">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-3 text-blue-100">Advanced Computer Labs</h3>
+                    <p class="text-blue-200 leading-relaxed">
+                        Equipped with high-speed internet and the latest software, our computer labs provide students with essential resources for research, programming, and digital learning.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="bg-blue-100 p-8 py-16 hidden-section">
+        <div class="container mx-auto text-gray-900">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl section-header header-light">What Our Students Say</h2>
+                <p class="text-lg text-gray-700 mt-4 max-w-2xl mx-auto">
+                    Hear directly from our students about their experiences and how Shri Fattechand Jain Jr College has positively impacted their academic and personal lives.
+                </p>
+            </div>
+
+            <div class="testimonial-carousel-container relative max-w-3xl mx-auto">
+                <div class="testimonial-track flex" id="testimonialTrack">
+                    <!-- Testimonial 1 -->
+                    <div class="testimonial-card bg-white rounded-lg shadow-xl p-8 m-4 animated-card">
+                        <p class="text-xl italic mb-4">"The faculty here is incredibly supportive and knowledgeable. They truly go the extra mile to ensure every student understands the concepts. My time at SFJC has been transformative!"</p>
+                        <div class="flex items-center justify-center">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Student Name" class="w-16 h-16 rounded-full mr-4 border-2 border-blue-500">
+                            <div>
+                                <p class="font-bold text-lg">Aryan Sharma</p>
+                                <p class="text-blue-600">Science Stream, Batch of 2024</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Testimonial 2 -->
+                    <div class="testimonial-card bg-white rounded-lg shadow-xl p-8 m-4 animated-card">
+                        <p class="text-xl italic mb-4">"SFJC provided me with an excellent foundation for my commerce career. The practical approach to subjects like Accountancy and Economics made learning enjoyable and highly effective."</p>
+                        <div class="flex items-center justify-center">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Student Name" class="w-16 h-16 rounded-full mr-4 border-2 border-emerald-500">
+                            <div>
+                                <p class="font-bold text-lg">Priya Singh</p>
+                                <p class="text-emerald-600">Commerce Stream, Batch of 2023</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Testimonial 3 -->
+                    <div class="testimonial-card bg-white rounded-lg shadow-xl p-8 m-4 animated-card">
+                        <p class="text-xl italic mb-4">"The college's emphasis on holistic development truly stood out. Beyond academics, the debate clubs and cultural events helped me grow as an individual."</p>
+                        <div class="flex items-center justify-center">
+                            <img src="https://randomuser.me/api/portraits/men/47.jpg" alt="Student Name" class="w-16 h-16 rounded-full mr-4 border-2 border-fuchsia-500">
+                            <div>
+                                <p class="font-bold text-lg">Rahul Kumar</p>
+                                <p class="text-fuchsia-600">Arts Stream, Batch of 2022</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Testimonial 4 -->
+                    <div class="testimonial-card bg-white rounded-lg shadow-xl p-8 m-4 animated-card">
+                        <p class="text-xl italic mb-4">"The facilities, especially the labs, are top-notch. It made complex science experiments understandable and enjoyable. Highly recommend SFJC for science aspirants!"</p>
+                        <div class="flex items-center justify-center">
+                            <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Student Name" class="w-16 h-16 rounded-full mr-4 border-2 border-blue-500">
+                            <div>
+                                <p class="font-bold text-lg">Neha Reddy</p>
+                                <p class="text-blue-600">Science Stream, Batch of 2024</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Carousel Buttons -->
+                <button id="prevTestimonial" class="carousel-button left"><i class="fas fa-chevron-left"></i></button>
+                <button id="nextTestimonial" class="carousel-button right"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Us Section -->
+    <section id="contact" class="bg-slate-900 p-8 py-16 hidden-section">
+        <div class="container mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl section-header header-dark">Get in Touch</h2>
+                <p class="text-lg text-blue-200 mt-4 max-w-2xl mx-auto">
+                    Have questions or need more information? Feel free to reach out to us. We're here to help!
+                </p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-12">
+                <!-- Contact Information -->
+                <div class="bg-slate-800 rounded-xl shadow-lg p-8 animated-card">
+                    <h3 class="text-3xl font-semibold mb-6 text-blue-100">Contact Information</h3>
+                    <div class="space-y-4 text-blue-200">
+                        <p><i class="fas fa-map-marker-alt text-blue-400 mr-3"></i> 123 College Road, Education City, Pimpri-Chinchwad, Maharashtra, India</p>
+                        <p><i class="fas fa-phone-alt text-blue-400 mr-3"></i> +91 12345 67890</p>
+                        <p><i class="fas fa-envelope text-blue-400 mr-3"></i> info@sfjrc.edu.in</p>
+                        <p><i class="fas fa-globe text-blue-400 mr-3"></i> www.sfjrc.edu.in</p>
+                        <div class="mt-6 flex space-x-6 justify-center md:justify-start">
+                            <a href="#" class="text-blue-400 hover:text-blue-300 transition-colors duration-200 text-3xl"><i class="fab fa-facebook-square"></i></a>
+                            <a href="#" class="text-blue-400 hover:text-blue-300 transition-colors duration-200 text-3xl"><i class="fab fa-twitter-square"></i></a>
+                            <a href="#" class="text-blue-400 hover:text-blue-300 transition-colors duration-200 text-3xl"><i class="fab fa-instagram-square"></i></a>
+                            <a href="#" class="text-blue-400 hover:text-blue-300 transition-colors duration-200 text-3xl"><i class="fab fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Contact Form -->
+                <div class="bg-slate-800 rounded-xl shadow-lg p-8 animated-card">
+                    <h3 class="text-3xl font-semibold mb-6 text-blue-100">Send Us a Message</h3>
+                    <form id="contactForm" class="space-y-6">
+                        <div>
+                            <label for="name" class="block text-blue-200 text-lg font-medium mb-2">Your Name</label>
+                            <input type="text" id="name" name="name" class="w-full p-3 rounded-md bg-slate-700 border border-slate-600 text-white focus:ring-blue-500 focus:border-blue-500" placeholder="John Doe" required>
+                        </div>
+                        <div>
+                            <label for="email" class="block text-blue-200 text-lg font-medium mb-2">Your Email</label>
+                            <input type="email" id="email" name="email" class="w-full p-3 rounded-md bg-slate-700 border border-slate-600 text-white focus:ring-blue-500 focus:border-blue-500" placeholder="john.doe@example.com" required>
+                        </div>
+                        <div>
+                            <label for="message" class="block text-blue-200 text-lg font-medium mb-2">Your Message</label>
+                            <textarea id="message" name="message" rows="5" class="w-full p-3 rounded-md bg-slate-700 border border-slate-600 text-white focus:ring-blue-500 focus:border-blue-500" placeholder="Tell us more..." required></textarea>
+                        </div>
+                        <button type="submit" id="sendMessageBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center send-message-btn">
+                            <span id="sendBtnText">Send Message</span>
+                            <i id="sendBtnIcon" class="fas fa-paper-plane ml-2"></i>
+                            <span id="sendBtnSpinner" class="hidden loading-spinner"></span>
+                        </button>
+                        <div id="formMessage" class="mt-4 text-center text-lg hidden"></div>
+                    </form>
+                </div>
+            </div>
+            <!-- Google Maps Embed -->
+            <div class="mt-16 rounded-xl overflow-hidden shadow-lg animated-card">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15124.965410185966!2d73.79979355!3d18.63852005!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2b9e6f7b1f6b7%3A0x6b4e9f5e3d7e7e7e!2sPimpri-Chinchwad%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1718985552399!5m2!1sen!2sin" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-950 text-blue-200 p-8 text-center">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-6">
+                <div class="mb-4 md:mb-0 text-center md:text-left">
+                    <h4 class="text-2xl font-bold text-blue-100">Shri Fattechand Jain Jr College</h4>
+                    <p class="text-sm mt-2">&copy; 2025 All rights reserved.</p>
+                </div>
+                <div class="flex flex-col items-center md:items-start mb-4 md:mb-0">
+                    <h5 class="text-lg font-semibold mb-2">Quick Links</h5>
+                    <div class="flex flex-col space-y-2">
+                        <a href="#home" class="hover:text-blue-400">Home</a>
+                        <a href="#about" class="hover:text-blue-400">About Us</a>
+                        <a href="#academics" class="hover:text-blue-400">Academics</a>
+                        <a href="#contact" class="hover:text-blue-400">Contact Us</a>
+                    </div>
+                </div>
+                <div class="flex flex-col items-center md:items-start">
+                    <h5 class="text-lg font-semibold mb-2">Follow Us</h5>
+                    <div class="flex space-x-4">
+                        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:text-blue-300 transition-colors duration-200 text-3xl">
+                            <i class="fab fa-facebook-square"></i>
+                        </a>
+                        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:text-blue-300 transition-colors duration-200 text-3xl">
+                            <i class="fab fa-twitter-square"></i>
+                        </a>
+                        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:text-blue-300 transition-colors duration-200 text-3xl">
+                            <i class="fab fa-instagram-square"></i>
+                        </a>
+                        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:text-blue-300 transition-colors duration-200 text-3xl">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 pt-6 mt-6">
+                <p class="text-sm">Designed with <i class="fas fa-heart text-red-500 mx-1"></i> by Our Web Team</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scrollToTopBtn" aria-label="Scroll to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Sticky Header Effect
+        const mainHeader = document.getElementById('mainHeader');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                mainHeader.classList.add('scrolled');
+            } else {
+                mainHeader.classList.remove('scrolled');
+            }
+        });
+
+        // Get elements for the new hamburger menu overlay
+        const menuButton = document.getElementById('menu-button');
+        const navLinksOverlay = document.getElementById('nav-links-overlay');
+        const closeMenuButton = document.getElementById('close-menu-button');
+        const navLinks = document.getElementById('nav-links'); // The container of actual navigation links
+
+        // Function to open the navigation menu
+        const openNavMenu = () => {
+            navLinksOverlay.classList.add('menu-open');
+            document.body.classList.add('no-scroll'); // Prevent body scroll
+        };
+
+        // Function to close the navigation menu
+        const closeNavMenu = () => {
+            navLinksOverlay.classList.remove('menu-open');
+            document.body.classList.remove('no-scroll'); // Allow body scroll
+        };
+
+        // Event listener to open the menu when hamburger icon is clicked
+        menuButton.addEventListener('click', openNavMenu);
+
+        // Event listener to close the menu when the close icon is clicked
+        closeMenuButton.addEventListener('click', closeNavMenu);
+
+        // Close menu when a navigation link is clicked (inside the overlay)
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', closeNavMenu);
+        });
+
+        // Scroll Reveal Animation
+        const hiddenSections = document.querySelectorAll('.hidden-section');
+
+        const revealSection = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('reveal-section');
+                    observer.unobserve(entry.target);
+                }
+            });
+        };
+
+        const sectionObserver = new IntersectionObserver(revealSection, {
+            root: null, // viewport
+            threshold: 0.15 // 15% of the section must be visible
+        });
+
+        hiddenSections.forEach(section => {
+            sectionObserver.observe(section);
+        });
+
+        // Academics Section Overlay Logic
+        const academicsTeaser = document.getElementById('academicsTeaser');
+        const academicsFullScreenOverlay = document.getElementById('academicsFullScreenOverlay');
+        const closeAcademicsOverlayBtn = document.getElementById('closeAcademicsOverlayBtn');
+        const scienceDetails = document.getElementById('science-details');
+        const commerceDetails = document.getElementById('commerce-details');
+        const artsDetails = document.getElementById('arts-details');
+
+        const scienceCard = document.getElementById('scienceCard');
+        const commerceCard = document.getElementById('commerceCard');
+        const artsCard = document.getElementById('artsCard');
+
+        const hideAllAcademicDetails = () => {
+            scienceDetails.classList.add('hidden-section');
+            scienceDetails.classList.remove('reveal-section');
+            commerceDetails.classList.add('hidden-section');
+            commerceDetails.classList.remove('reveal-section');
+            artsDetails.classList.add('hidden-section');
+            artsDetails.classList.remove('reveal-section');
+        };
+
+        const showAcademicDetails = (section) => {
+            hideAllAcademicDetails();
+            section.classList.remove('hidden-section');
+            section.classList.add('reveal-section');
+            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        };
+
+        const toggleAcademicsOverlay = () => {
+            academicsFullScreenOverlay.classList.toggle('active');
+            // Prevent body scroll when academics overlay is active
+            document.body.style.overflow = academicsFullScreenOverlay.classList.contains('active') ? 'hidden' : '';
+        };
+
+        academicsTeaser.addEventListener('click', toggleAcademicsOverlay);
+        academicsTeaser.addEventListener('mouseenter', () => {
+            // Only activate on desktop hover for a short delay
+            if (window.innerWidth >= 768) {
+                clearTimeout(academicsTeaser.hoverTimeout);
+                academicsTeaser.hoverTimeout = setTimeout(toggleAcademicsOverlay, 300);
+            }
+        });
+        academicsTeaser.addEventListener('mouseleave', () => {
+            clearTimeout(academicsTeaser.hoverTimeout);
+        });
+
+        closeAcademicsOverlayBtn.addEventListener('click', toggleAcademicsOverlay);
+
+        // Click listeners for cards inside overlay to show details sections
+        scienceCard.addEventListener('click', () => {
+            toggleAcademicsOverlay(); // Close overlay
+            showAcademicDetails(scienceDetails);
+        });
+        commerceCard.addEventListener('click', () => {
+            toggleAcademicsOverlay(); // Close overlay
+            showAcademicDetails(commerceDetails);
+        });
+        artsCard.addEventListener('click', () => {
+            toggleAcademicsOverlay(); // Close overlay
+            showAcademicDetails(artsDetails);
+        });
+
+        // Back buttons in details sections
+        document.querySelectorAll('.container a[href="#academics"]').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                hideAllAcademicDetails();
+                document.getElementById('academics').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+
+
+        // Admissions Buttons Enhancements
+        const downloadProspectusBtn = document.getElementById('downloadProspectusBtn');
+        const downloadProspectusText = document.getElementById('downloadProspectusText');
+        const downloadProspectusSpinner = document.getElementById('downloadProspectusSpinner');
+
+        downloadProspectusBtn.addEventListener('click', () => {
+            downloadProspectusText.classList.add('hidden');
+            downloadProspectusSpinner.classList.remove('hidden');
+
+            // Simulate file download
+            setTimeout(() => {
+                const prospectusContent = `
+Shri Fattechand Jain Jr College Prospectus 2025-26
+
+Welcome to SFJC!
+
+This prospectus provides detailed information about our academic programs, admission procedures, facilities, and campus life.
+
+Academic Streams:
+- Science (PCM/PCB/PCMB)
+- Commerce (Accounts, Economics, Business Studies)
+- Arts/Humanities (History, Political Science, Sociology, Literature)
+
+Eligibility Criteria:
+- Minimum 60% in 10th grade.
+- Age 15-17 years as of June 1st.
+- Entrance Exam & Interview.
+
+Fee Structure:
+Please refer to our website or contact the admissions office for the latest fee details.
+
+Contact Information:
+Email: info@sfjrc.edu.in
+Phone: +91 12345 67890
+Address: 123 College Road, Education City, Pimpri-Chinchwad, Maharashtra, India
+
+We look forward to welcoming you to SFJC!
+                `;
+                const blob = new Blob([prospectusContent], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'SFJC_Prospectus_2025-26.txt'; // You can change to .pdf or .doc if you generate real files
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url); // Clean up the URL object
+
+                // Reset button state
+                downloadProspectusText.classList.remove('hidden');
+                downloadProspectusSpinner.classList.add('hidden');
+            }, 1500); // Simulate network delay for download
+        });
+
+        const viewEligibilityBtn = document.getElementById('viewEligibilityBtn');
+        const viewEligibilityText = document.getElementById('viewEligibilityText');
+        const viewEligibilitySpinner = document.getElementById('viewEligibilitySpinner');
+        const eligibilityModal = document.getElementById('eligibilityModal');
+        const closeEligibilityModalBtn = document.getElementById('closeEligibilityModalBtn');
+
+        // Function to open the eligibility modal
+        const openEligibilityModal = () => {
+            viewEligibilityText.classList.add('hidden');
+            viewEligibilitySpinner.classList.remove('hidden');
+            viewEligibilityBtn.disabled = true;
+
+            setTimeout(() => {
+                eligibilityModal.classList.add('active');
+                document.body.classList.add('no-scroll'); // Prevent body scroll
+                viewEligibilityText.classList.remove('hidden');
+                viewEligibilitySpinner.classList.add('hidden');
+                viewEligibilityBtn.disabled = false;
+            }, 1000); // Simulate loading time before showing modal
+        };
+
+        // Function to close the eligibility modal
+        const closeEligibilityModal = () => {
+            eligibilityModal.classList.remove('active');
+            document.body.classList.remove('no-scroll'); // Allow body scroll
+        };
+
+        viewEligibilityBtn.addEventListener('click', openEligibilityModal);
+        closeEligibilityModalBtn.addEventListener('click', closeEligibilityModal);
+
+        // Close modal if clicked outside of content (optional, but good UX)
+        eligibilityModal.addEventListener('click', (e) => {
+            if (e.target === eligibilityModal) {
+                closeEligibilityModal();
+            }
+        });
+
+
+        // Testimonial Carousel
+        const testimonialTrack = document.getElementById('testimonialTrack');
+        const prevTestimonialBtn = document.getElementById('prevTestimonial');
+        const nextTestimonialBtn = document.getElementById('nextTestimonial');
+        let currentTestimonialIndex = 0;
+        const totalTestimonials = testimonialTrack.children.length;
+
+        const updateTestimonialCarousel = () => {
+            const offset = -currentTestimonialIndex * 100;
+            testimonialTrack.style.transform = `translateX(${offset}%)`;
+        };
+
+        prevTestimonialBtn.addEventListener('click', () => {
+            currentTestimonialIndex = (currentTestimonialIndex > 0) ? currentTestimonialIndex - 1 : totalTestimonials - 1;
+            updateTestimonialCarousel();
+        });
+
+        nextTestimonialBtn.addEventListener('click', () => {
+            currentTestimonialIndex = (currentTestimonialIndex < totalTestimonials - 1) ? currentTestimonialIndex + 1 : 0;
+            updateTestimonialCarousel();
+        });
+
+        // Initialize carousel position
+        updateTestimonialCarousel();
+
+        // Contact Form Submission with Fly Away Animation
+        const contactForm = document.getElementById('contactForm');
+        const sendMessageBtn = document.getElementById('sendMessageBtn');
+        const sendBtnText = document.getElementById('sendBtnText');
+        const sendBtnIcon = document.getElementById('sendBtnIcon');
+        const sendBtnSpinner = document.getElementById('sendBtnSpinner');
+        const formMessage = document.getElementById('formMessage');
+
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            // Show loading state
+            sendBtnText.textContent = 'Sending...';
+            sendBtnIcon.classList.add('hidden'); // Hide icon immediately
+            sendBtnSpinner.classList.remove('hidden');
+            sendMessageBtn.disabled = true; // Disable button
+
+            // Simulate sending message
+            setTimeout(() => {
+                // Animate paper plane fly away
+                sendBtnIcon.classList.remove('hidden'); // Show icon briefly for animation
+                sendBtnIcon.classList.add('fly-away');
+
+                setTimeout(() => {
+                    sendBtnIcon.classList.remove('fly-away'); // Clean up animation class
+                    sendBtnIcon.classList.add('hidden'); // Hide again after animation
+                    sendBtnSpinner.classList.add('hidden');
+                    sendBtnText.textContent = 'Message Sent!';
+                    formMessage.textContent = 'Your message has been sent successfully!';
+                    formMessage.classList.remove('hidden');
+                    formMessage.classList.add('text-green-400'); // Success color
+
+                    // Reset form and button after a short delay
+                    setTimeout(() => {
+                        contactForm.reset();
+                        sendBtnText.textContent = 'Send Message';
+                        sendBtnIcon.classList.remove('hidden'); // Show icon for next use
+                        formMessage.classList.add('hidden');
+                        formMessage.classList.remove('text-green-400');
+                        sendMessageBtn.disabled = false;
+                    }, 2000); // Wait for animation to finish then reset
+                }, 800); // Matches animation duration
+            }, 1500); // Simulate network request delay
+        });
+
+        // Scroll-to-Top Button Logic
+        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) { // Show button after scrolling 300px down
+                scrollToTopBtn.classList.add('show');
+            } else {
+                scrollToTopBtn.classList.remove('show');
+            }
+        });
+
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth' // Smooth scroll animation
+            });
+        });
+    </script>
 
 </body>
 </html>
